@@ -8,9 +8,9 @@ var analyzer
 
 
 function preload() {
-  img[0] = loadImage('./assets/images/0.png');
-  img[1] = loadImage('./assets/images/1.png');
-  img[2] = loadImage('./assets/images/2.png');
+  img[0] = loadImage('./assets/images/0.PNG');
+  img[1] = loadImage('./assets/images/1.PNG');
+  img[2] = loadImage('./assets/images/2.PNG');
   song[1] = loadSound("./assets/sound/rick.mp3");
   song[2] = loadSound("./assets/sound/Loser.mp3");
 
