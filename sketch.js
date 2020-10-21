@@ -13,8 +13,8 @@ function preload() {
   img[0] = loadImage("./assets/images/zero.png");
   img[1] = loadImage("./assets/images/uno.png");
   img[2] = loadImage("./assets/images/due.png");
-  song[1] = loadSound("/assets/sound/rick.mp3");
-  song[2] = loadSound("/assets/sound/loser.mp3");
+  song[1] = loadSound("/assets/sound/uno.mp3");
+  song[2] = loadSound("/assets/sound/due.mp3");
 
 }
 
