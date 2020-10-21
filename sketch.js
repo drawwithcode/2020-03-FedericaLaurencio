@@ -14,7 +14,7 @@ function preload() {
   img[1] = loadImage("./assets/images/uno.png");
   img[2] = loadImage("./assets/images/due.png");
   song[1] = loadSound("/assets/sound/rick.mp3");
-  song[2] = loadSound("/assets/sound/Loser.mp3");
+  song[2] = loadSound("/assets/sound/loser.mp3");
 
 }
 
@@ -82,37 +82,40 @@ function draw() {
     myVHS[i].show();
   }
   //console.log(mouseY)
+
+  //rect(280, 286, 45, 40)
+
+viz()
+
+}
+function viz() {
   let volume1 = 0;
   let volume2 = 0;
   volume1 = analyzer1.getLevel();
   volume1 = map(volume1, 0, 1, 10, 300)
   volume2 = analyzer2.getLevel();
   volume2 = map(volume2, 0, 1, 10, 300)
-  //rect(280, 286, 45, 40)
-  let d = 10;
+    let d = 10;
+    for (let q = 374; q < 480; q += d) {
+  let h = (q - 374) / 10
+  push();
+  noFill();
+  strokeWeight(1)
+  if (song[1].isPlaying()==true) {
 
-  for (let q = 374; q < 480; q += d) {
-    let h = (q - 374) / 10
-    push();
-    noFill();
-    strokeWeight(1)
-    if (song[1].isPlaying()) {
+    stroke("#4B1B27")
 
-      stroke("#4B1B27")
-
-      rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
-      rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
-    }
-    if (song[2].isPlaying()) {
-      stroke("#ff8080")
-      rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
-      rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
-    }
-    pop();
-
+    rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
+    rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
   }
-}
+  if (song[2].isPlaying()==true) {
+    stroke("#ff8080")
+    rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
+    rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
+  }
+  pop();
 
+}}
 function illus() {
 
   if (windowWidth > 1000) {
@@ -158,6 +161,7 @@ function mousePressed() {
 }
 
 function mouseClicked() {
+  console.log(myVHS)
   for (var i = 0; i < myVHS.length; i++) {
     if (myVHS[i].click()) {
 
