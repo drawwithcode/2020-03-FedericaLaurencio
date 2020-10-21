@@ -2,6 +2,8 @@ let myVHS = [];
 let song = [1, 2];
 let img = [0, 1]
 let button = []
+let g = false;
+let h = false;
 
 var analyzer
 
@@ -9,8 +11,8 @@ var analyzer
 
 function preload() {
   img[0] = loadImage("./assets/images/zero.png");
-img[1] = loadImage("./assets/images/uno.png");
-img[2] = loadImage("./assets/images/due.png");
+  img[1] = loadImage("./assets/images/uno.png");
+  img[2] = loadImage("./assets/images/due.png");
   song[1] = loadSound("/assets/sound/rick.mp3");
   song[2] = loadSound("/assets/sound/Loser.mp3");
 
@@ -31,37 +33,37 @@ function setup() {
   //VHS class options
   const roll = {
     k: 200,
-    j:1,
-    text: "choose me",
+    j: 1,
+    text: "CHOOSE ME",
     Wposition1: 82,
     Hposition1: 360,
     Ww1: 66,
     Hh1: 20,
-    Wposition2: 82+66,
+    Wposition2: 82 + 66,
     Hposition2: 345,
     Ww2: 66,
     Hh2: 20,
     Wposition3: 52,
     Ww3: 132,
 
-    hovering : false
+    hovering: false
   }
   const lofi = {
     k: 300,
-    j:2,
-    text: "boring politics",
+    j: 2,
+    text: "JUST POLITICS",
     Wposition1: 92,
     Hposition1: 385,
     Ww1: 66,
     Hh1: 20,
-    Wposition2: 92+66,
+    Wposition2: 92 + 66,
     Hposition2: 375,
     Ww2: 66,
     Hh2: 20,
     Wposition3: 62,
     Ww3: 132,
   }
-//VHS push
+  //VHS push
   myVHS = [new VHS(roll), new VHS(lofi)];
 
 
@@ -73,59 +75,59 @@ function setup() {
 }
 
 function draw() {
-illus()
+  illus()
   for (let i = 0; i < myVHS.length; i++) {
 
     myVHS[i].over();
     myVHS[i].show();
   }
-  console.log(mouseX)
+  //console.log(mouseY)
   let volume1 = 0;
   let volume2 = 0;
   volume1 = analyzer1.getLevel();
   volume1 = map(volume1, 0, 1, 10, 300)
   volume2 = analyzer2.getLevel();
   volume2 = map(volume2, 0, 1, 10, 300)
-
+  //rect(280, 286, 45, 40)
   let d = 10;
 
   for (let q = 374; q < 480; q += d) {
- let h = (q-374)/10
-      push();
-noFill();
-strokeWeight(1)
-        if (song[1].isPlaying()){
+    let h = (q - 374) / 10
+    push();
+    noFill();
+    strokeWeight(1)
+    if (song[1].isPlaying()) {
 
-          stroke("#4B1B27")
+      stroke("#4B1B27")
 
-          rect(q , 200+(-volume1/2)/h-q/18, 4, volume1/h)
-          rect(760-q , (157.7+(-volume1/2)/h)+q/18, 4, volume1/h)
-        }
-      if (song[2].isPlaying()){
-        stroke("#ff8080")
-        rect(q , 200+(-volume2/2)/h-q/18, 3, volume2/h)
-        rect(760-q , (157.7+(-volume2/2)/h)+q/18, 3, volume2/h)
-      }
-      pop();
+      rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
+      rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
+    }
+    if (song[2].isPlaying()) {
+      stroke("#ff8080")
+      rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
+      rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
+    }
+    pop();
 
-}
+  }
 }
 
 function illus() {
 
   if (windowWidth > 1000) {
     resizeCanvas(800, 600);
-    if(song[1].isPlaying()){
-       image(img[1], 0, 0, 800, 600);
-       document.body.style.backgroundColor = "#ECAD6F"
+    if (song[1].isPlaying()) {
+      image(img[1], 0, 0, 800, 600);
+      document.body.style.backgroundColor = "#ECAD6F"
 
-    }
-    else if (song[2].isPlaying()){
+    } else if (song[2].isPlaying()) {
       image(img[2], 0, 0, 800, 600);
-    document.body.style.backgroundColor = "#092B34"}
-      else {
-        image(img[0], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "gray"}
+      document.body.style.backgroundColor = "#092B34"
+    } else {
+      image(img[0], 0, 0, 800, 600);
+      document.body.style.backgroundColor = "gray"
+    }
   } else if (windowWidth < 800 && windowWidth > 600) {
     resizeCanvas(400, 300);
     image(img, 0, 0, 400, 300);
@@ -133,13 +135,34 @@ function illus() {
 
 }
 
+function mousePressed() {
+  if (mouseX > 280 && mouseX < 325 && mouseY > 286 && mouseY < 326) {
+    if (song[1].isPlaying() == true) {
+      song[1].pause()
+      g = true;
+      console.log("hello")
+    } else if (g == true) {
+      song[1].play()
+      g = false;
+    }
+    if (song[2].isPlaying() == true) {
+      song[2].pause()
+      h = true;
+      console.log("hello")
+    } else if (h == true) {
+      song[2].play()
+      h = false;
+    }
+  }
 
-function mouseClicked(){
-	for(var i = 0; i < myVHS.length; i++){
-		if(myVHS[i].click()){
+}
 
-		};
-	}
+function mouseClicked() {
+  for (var i = 0; i < myVHS.length; i++) {
+    if (myVHS[i].click()) {
+
+    };
+  }
 
 }
 
@@ -159,8 +182,8 @@ class VHS {
     Wposition3,
     Ww3,
     hovering,
-	  clicked,
-  	hoveringStarted,
+    clicked,
+    hoveringStarted,
   } = {}) {
     this.j = j;
     this.k = k;
@@ -176,76 +199,81 @@ class VHS {
     this.Wposition3 = Wposition3;
     this.Ww3 = Ww3;
     this.hovering = false;
-	  this.clicked = false;
-	  this.hoveringStarted = 0;
+    this.clicked = false;
+    this.hoveringStarted = 0;
   }
   show() {
-    push();
+
     noFill();
     noStroke();
+    fill("gray")
+    if (this.hovering) {
+      fill("black")
+      //stroke("white")
 
-    if(this.hovering){
-      stroke("red")
-      strokeWeight(3)
-  console.log(this.hovering)
+      //strokeWeight(1)
+
+      console.log(this.hovering)
 
     }
-    if(this.clicked){
+    if (this.clicked) {
       fill("red")
-song[1].stop()
-song[2].stop()
- song[this.j].play()
+      song[1].stop()
+      song[2].stop()
+
+      song[this.j].play()
+
+
 
 
 
 
 
     }
-this.clicked = false;
+    this.clicked = false;
 
 
 
-  rect(this.Wposition1, this.Hposition1, this.Ww1, this.Hh1 )
-  rect(this.Wposition2, this.Hposition2, this.Ww2, this.Hh2 )
-  fill("black")
-  textSize(15);
-  textAlign(CENTER);
-  rotate(-5)
-  textFont('Permanent Marker');
-  text(this.text, this.Wposition3, this.Hposition1+7, this.Ww3, this.Hh1  );
-  pop()
+    //rect(this.Wposition1, this.Hposition1, this.Ww1, this.Hh1 )
+    //rect(this.Wposition2, this.Hposition2, this.Ww2, this.Hh2 )
+    push();
+
+    textSize(19);
+    textAlign(CENTER);
+    rotate(-5)
+    textFont('East Sea Dokdo');
+    text(this.text, this.Wposition3, this.Hposition1 + 7, this.Ww3, this.Hh1);
+    pop()
   }
   over() {
-    let q =this.Wposition1+this.Ww1;
-    let s =this.Hposition1+this.Hh1;
-    let w =this.Wposition2+this.Ww2;
-    let e =this.Hposition2+this.Hh2;
-     if (mouseX>=this.Wposition1 && mouseX<=q && mouseY>=this.Hposition1 && mouseY<=s ||
-       mouseX>=this.Wposition2 && mouseX<=w && mouseY>=this.Hposition2 && mouseY<=e) {
+    let q = this.Wposition1 + this.Ww1;
+    let s = this.Hposition1 + this.Hh1;
+    let w = this.Wposition2 + this.Ww2;
+    let e = this.Hposition2 + this.Hh2;
+    if (mouseX >= this.Wposition1 && mouseX <= q && mouseY >= this.Hposition1 && mouseY <= s ||
+      mouseX >= this.Wposition2 && mouseX <= w && mouseY >= this.Hposition2 && mouseY <= e) {
 
-          this.hovering = true;
-          //song[this.j].play()
+      this.hovering = true;
+      //song[this.j].play()
 
- }
- 		else{
- 			this.hovering = false;
+    } else {
+      this.hovering = false;
 
- 		}
- 		return this.hovering;
-   }
-   click(){
-   		if(this.over()){
-   			this.clicked = true;
+    }
+    return this.hovering;
+  }
+  click() {
+    if (this.over()) {
+      this.clicked = true;
 
 
-   		};
-   	}
+    }
+  }
+
 
 
 
 }
-
-
 
 //function hover()    {
 //if(mouseX>65 && mouseX<185+65 && mouseY>372 && mouseY<372+28){
