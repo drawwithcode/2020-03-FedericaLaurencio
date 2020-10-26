@@ -4,8 +4,14 @@ let img = [0, 1]
 let button = []
 let g = false;
 let h = false;
+let f = false;
+let d = false;
+let volume1 = 0;
+let volume2 = 0;
+let volume3 = 0;
+let volume4 = 0;
 
-var analyzer
+
 
 
 
@@ -13,22 +19,22 @@ function preload() {
   img[0] = loadImage("./assets/images/zero.png");
   img[1] = loadImage("./assets/images/uno.png");
   img[2] = loadImage("./assets/images/due.png");
+  img[3] = loadImage("./assets/images/tre.png");
+  img[4] = loadImage("./assets/images/quattro.png");
   song[1] = loadSound("./assets/sound/uno.mp3");
   song[2] = loadSound("./assets/sound/due.mp3");
+  song[3] = loadSound("./assets/sound/tre.mp3");
+  song[4] = loadSound("./assets/sound/quattro.mp3");
 
 }
 
 function setup() {
   createCanvas(800, 600)
   angleMode(DEGREES)
-
-
+analyzer()
   //sound control
 
-  analyzer1 = new p5.Amplitude();
-  analyzer1.setInput(song[1]);
-  analyzer2 = new p5.Amplitude();
-  analyzer2.setInput(song[2]);
+
 
   //VHS class options
   const roll = {
@@ -36,10 +42,10 @@ function setup() {
     j: 1,
     text: "CHOOSE ME",
     Wposition1: 82,
-    Hposition1: 360,
+    Hposition1: 358,
     Ww1: 66,
     Hh1: 20,
-    Wposition2: 82 + 66,
+    Wposition2: 78 + 66,
     Hposition2: 345,
     Ww2: 66,
     Hh2: 20,
@@ -48,32 +54,64 @@ function setup() {
 
     hovering: false
   }
-  const lofi = {
+  const conte = {
     k: 300,
     j: 2,
-    text: "JUST POLITICS",
-    Wposition1: 92,
+    text:"JUST POLITICS" ,
+    Wposition1: 82,
     Hposition1: 385,
     Ww1: 66,
     Hh1: 20,
-    Wposition2: 92 + 66,
+    Wposition2: 78 + 66,
     Hposition2: 375,
     Ww2: 66,
     Hh2: 20,
-    Wposition3: 62,
+    Wposition3: 58,
     Ww3: 132,
   }
+  const komm = {
+    k: 300,
+    j: 3,
+    text: "GET IN",
+    Wposition1: 82,
+    Hposition1: 410,
+    Ww1: 66,
+    Hh1: 20,
+    Wposition2: 78 + 66,
+    Hposition2: 400,
+    Ww2: 66,
+    Hh2: 20,
+    Wposition3: 47,
+    Ww3: 132,
+  }
+  const spooky = {
+    k: 300,
+    j: 4,
+    text: "SPOOOKY",
+    Wposition1: 82,
+    Hposition1: 430,
+    Ww1: 66,
+    Hh1: 20,
+    Wposition2: 78 + 66,
+    Hposition2: 424,
+    Ww2: 66,
+    Hh2: 20,
+    Wposition3: 44,
+    Ww3: 132,
+  }
+
   //VHS push
-  myVHS = [new VHS(roll), new VHS(lofi)];
-
-
-
-
-
-
-
+  myVHS = [new VHS(roll), new VHS(conte), new VHS(komm), new VHS(spooky)];
 }
-
+function analyzer(){
+  analyzer1 = new p5.Amplitude();
+  analyzer1.setInput(song[1]);
+  analyzer2 = new p5.Amplitude();
+  analyzer2.setInput(song[2]);
+  analyzer3 = new p5.Amplitude();
+  analyzer3.setInput(song[3]);
+  analyzer4 = new p5.Amplitude();
+  analyzer4.setInput(song[4]);}
 function draw() {
   illus()
   for (let i = 0; i < myVHS.length; i++) {
@@ -85,16 +123,20 @@ function draw() {
 
   //rect(280, 286, 45, 40)
 
-viz()
+  viz()
 
 }
 function viz() {
-  let volume1 = 0;
-  let volume2 = 0;
+
   volume1 = analyzer1.getLevel();
   volume1 = map(volume1, 0, 1, 10, 300)
   volume2 = analyzer2.getLevel();
   volume2 = map(volume2, 0, 1, 10, 300)
+  volume3 = analyzer3.getLevel();
+  volume3 = map(volume3, 0, 1, 10, 300)
+  volume4 = analyzer4.getLevel();
+  volume4 = map(volume4, 0, 1, 10, 300)
+  //console.log(analyzer1.getLevel())
     let d = 10;
     for (let q = 374; q < 480; q += d) {
   let h = (q - 374) / 10
@@ -103,38 +145,53 @@ function viz() {
   strokeWeight(1)
   if (song[1].isPlaying()==true) {
 
-    stroke("#4B1B27")
+    stroke("#00E0D5")
 
     rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
     rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
   }
-  if (song[2].isPlaying()==true) {
-    stroke("#ff8080")
+  else if (song[2].isPlaying()==true) {
+    stroke("#9AC5E4")
     rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
     rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
+  }
+  else if (song[3].isPlaying()==true) {
+    stroke("#E76468")
+    rect(q, 200 + (-volume3 / 2) / h - q / 18, 3, volume3 / h)
+    rect(760 - q, (157.7 + (-volume3 / 2) / h) + q / 18, 3, volume3 / h)
+  }
+  else if (song[4].isPlaying()==true) {
+    stroke("#4B1B27")
+    rect(q, 200 + (-volume4 / 2) / h - q / 18, 3, volume4 / h)
+    rect(760 - q, (157.7 + (-volume4 / 2) / h) + q / 18, 3, volume4 / h)
   }
   pop();
 
 }}
 function illus() {
 
-  if (windowWidth > 1000) {
+
     resizeCanvas(800, 600);
     if (song[1].isPlaying()) {
       image(img[1], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "#ECAD6F"
+      document.body.style.backgroundColor = "#006C92"
 
     } else if (song[2].isPlaying()) {
       image(img[2], 0, 0, 800, 600);
+      document.body.style.backgroundColor = "#925098"
+    }
+    else if (song[3].isPlaying()) {
+      image(img[3], 0, 0, 800, 600);
       document.body.style.backgroundColor = "#092B34"
+    }
+    else if (song[4].isPlaying()) {
+      image(img[4], 0, 0, 800, 600);
+      document.body.style.backgroundColor = "#ECAD6F"
     } else {
       image(img[0], 0, 0, 800, 600);
       document.body.style.backgroundColor = "gray"
     }
-  } else if (windowWidth < 800 && windowWidth > 600) {
-    resizeCanvas(400, 300);
-    image(img, 0, 0, 400, 300);
-  }
+
 
 }
 
@@ -143,7 +200,6 @@ function mousePressed() {
     if (song[1].isPlaying() == true) {
       song[1].pause()
       g = true;
-      console.log("hello")
     } else if (g == true) {
       song[1].play()
       g = false;
@@ -151,10 +207,25 @@ function mousePressed() {
     if (song[2].isPlaying() == true) {
       song[2].pause()
       h = true;
-      console.log("hello")
+
     } else if (h == true) {
       song[2].play()
       h = false;
+    }
+    if (song[3].isPlaying() == true) {
+      song[3].pause()
+      f = true;
+
+    } else if (f == true) {
+      song[3].play()
+      f = false;
+    }
+    if (song[4].isPlaying() == true) {
+      song[4].pause()
+      d = true;
+    } else if (d == true) {
+      song[4].play()
+      d = false;
     }
   }
 
@@ -224,6 +295,8 @@ class VHS {
       fill("red")
       song[1].stop()
       song[2].stop()
+      song[3].stop()
+      song[4].stop()
 
       song[this.j].play()
 
