@@ -1,15 +1,6 @@
 let myVHS = [];
-let song = [1, 2];
-let img = [0, 1]
-let button = []
-let g = false;
-let h = false;
-let f = false;
-let d = false;
-let volume1 = 0;
-let volume2 = 0;
-let volume3 = 0;
-let volume4 = 0;
+let song = [];
+let img = []
 let playingIndex = -1;
 let analyzer;
 var PP = [];
@@ -20,7 +11,12 @@ let colors = [
   "#E76468",
   "#4B1B27"
 ]
-
+let colorsBG = [
+  "#006C92",
+  "#925098",
+  "#092B34",
+  "#ECAD6F"
+]
 
 
 
@@ -43,14 +39,10 @@ function preload() {
 function setup() {
   createCanvas(800, 600)
   angleMode(DEGREES)
-  for(var i = 1; i < NofSongsPP; i++) {
+  for (var i = 1; i < NofSongsPP; i++) {
     PP.push(false);
   }
-  //sound control
 
-
-
-  //VHS class options
   const roll = {
     k: 200,
     j: 1,
@@ -114,46 +106,21 @@ function setup() {
     Ww3: 132,
   }
 
-  //VHS push
+
   myVHS = [new VHS(roll), new VHS(conte), new VHS(komm), new VHS(spooky)];
 }
 
-function setAnalyzer() {
-  // analyzer1 = new p5.Amplitude();
-  // analyzer1.setInput(song[1]);
-  // analyzer2 = new p5.Amplitude();
-  // analyzer2.setInput(song[2]);
-  // analyzer3 = new p5.Amplitude();
-  // analyzer3.setInput(song[3]);
-  // analyzer4 = new p5.Amplitude();
-  // analyzer4.setInput(song[4]);
-}
 
 function draw() {
   illus()
   for (let i = 0; i < myVHS.length; i++) {
-
     myVHS[i].over();
     myVHS[i].show();
   }
-  //console.log(mouseY)
-
-  //rect(280, 286, 45, 40)
-
   viz()
-
 }
 
 function viz() {
-  //
-  // volume1 = analyzer1.getLevel();
-  // volume1 = map(volume1, 0, 1, 10, 300)
-  // volume2 = analyzer2.getLevel();
-  // volume2 = map(volume2, 0, 1, 10, 300)
-  // volume3 = analyzer3.getLevel();
-  // volume3 = map(volume3, 0, 1, 10, 300)
-  // volume4 = analyzer4.getLevel();
-  // volume4 = map(volume4, 0, 1, 10, 300)
   let d = 10;
   for (let q = 374; q < 480; q += d) {
     let h = (q - 374) / 10
@@ -161,58 +128,25 @@ function viz() {
     noFill();
     strokeWeight(1)
 
-
-
     if (playingIndex !== -1 && song[playingIndex].isPlaying()) {
 
       let volume = map(analyzer.getLevel(), 0, 1, 10, 300);
-        colorOK= colors[playingIndex - 1]
-        stroke(colorOK);
-        //console.log(volume)
+      colorOK = colors[playingIndex - 1]
+      stroke(colorOK);
       rect(q, 200 + (-volume / 2) / h - q / 18, 3, volume / h)
-      rect(760 - q, (157.7 + (-volume/ 2) / h) + q / 18, 3, volume / h)
+      rect(760 - q, (157.7 + (-volume / 2) / h) + q / 18, 3, volume / h)
     }
-
-    // if (song[1].isPlaying() == true) {
-    //
-    //   stroke("#00E0D5")
-    //
-    //   rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
-    //   rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
-    // } else if (song[2].isPlaying() == true) {
-    //   stroke("#9AC5E4")
-    //   rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
-    //   rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
-    // } else if (song[3].isPlaying() == true) {
-    //   stroke("#E76468")
-    //   rect(q, 200 + (-volume3 / 2) / h - q / 18, 3, volume3 / h)
-    //   rect(760 - q, (157.7 + (-volume3 / 2) / h) + q / 18, 3, volume3 / h)
-    // } else if (song[4].isPlaying() == true) {
-    //   stroke("#4B1B27")
-    //   rect(q, 200 + (-volume4 / 2) / h - q / 18, 3, volume4 / h)
-    //   rect(760 - q, (157.7 + (-volume4 / 2) / h) + q / 18, 3, volume4 / h)
-    // }
-    pop();
-
   }
 }
 
 function illus() {
 
-
-  let colorsBG = [
-    "#006C92",
-    "#925098",
-    "#092B34",
-    "#ECAD6F"
-  ]
-
   resizeCanvas(800, 600);
   if (playingIndex !== -1 && song[playingIndex].isPlaying()) {
     image(img[playingIndex], 0, 0, 800, 600);
-    colorOKBG= colorsBG[playingIndex - 1]
+    colorOKBG = colorsBG[playingIndex - 1]
     document.body.style.backgroundColor = colorOKBG
- } else {
+  } else {
     image(img[0], 0, 0, 800, 600);
     document.body.style.backgroundColor = "gray"
   }
@@ -230,36 +164,12 @@ function mousePressed() {
       song[playingIndex].play()
       PP[playingIndex - 1] = false;
 
-    }}
-  //   if (song[2].isPlaying() == true) {
-  //     song[2].pause()
-  //     h = true;
-  //
-  //   } else if (h == true) {
-  //     song[2].play()
-  //     h = false;
-  //   }
-  //   if (song[3].isPlaying() == true) {
-  //     song[3].pause()
-  //     f = true;
-  //
-  //   } else if (f == true) {
-  //     song[3].play()
-  //     f = false;
-  //   }
-  //   if (song[4].isPlaying() == true) {
-  //     song[4].pause()
-  //     d = true;
-  //   } else if (d == true) {
-  //     song[4].play()
-  //     d = false;
-  //   }
-  // }
-
+    }
+  }
 }
 
 function mouseClicked() {
-  //console.log(myVHS)
+
   for (var i = 0; i < myVHS.length; i++) {
     if (myVHS[i].click()) {
 
@@ -308,16 +218,10 @@ class VHS {
 
     noFill();
     noStroke();
-
-    fill("gray")
+    blendMode(MULTIPLY)
+    fill("grey")
     if (this.hovering) {
       fill("black")
-      //stroke("white")
-
-      //strokeWeight(1)
-
-      //console.log(this.hovering)
-
     }
     if (this.clicked) {
       fill("red")
@@ -326,23 +230,19 @@ class VHS {
       song[3].stop()
       song[4].stop()
 
+      playingIndex = this.j;
 
-            playingIndex = this.j;
-
-let mySong = song[playingIndex]
+      let mySong = song[playingIndex]
       mySong.play();
 
       analyzer = new p5.Amplitude();
       analyzer.setInput(song[playingIndex]);
-
-
     }
     this.clicked = false;
 
-
-
     //rect(this.Wposition1, this.Hposition1, this.Ww1, this.Hh1 )
     //rect(this.Wposition2, this.Hposition2, this.Ww2, this.Hh2 )
+
     push();
 
     textSize(19);
@@ -350,8 +250,10 @@ let mySong = song[playingIndex]
     rotate(-5)
     textFont('East Sea Dokdo');
     text(this.text, this.Wposition3, this.Hposition1 + 7, this.Ww3, this.Hh1);
+
     pop()
   }
+
   over() {
     let q = this.Wposition1 + this.Ww1;
     let s = this.Hposition1 + this.Hh1;
@@ -361,7 +263,6 @@ let mySong = song[playingIndex]
       mouseX >= this.Wposition2 && mouseX <= w && mouseY >= this.Hposition2 && mouseY <= e) {
 
       this.hovering = true;
-      //song[this.j].play()
 
     } else {
       this.hovering = false;
@@ -372,8 +273,6 @@ let mySong = song[playingIndex]
   click() {
     if (this.over()) {
       this.clicked = true;
-
-
     }
   }
 
