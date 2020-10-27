@@ -10,6 +10,18 @@ let volume1 = 0;
 let volume2 = 0;
 let volume3 = 0;
 let volume4 = 0;
+let playingIndex = -1;
+let analyzer;
+var PP = [];
+var NofSongsPP = 4;
+let colors = [
+  "#00E0D5",
+  "#9AC5E4",
+  "#E76468",
+  "#4B1B27"
+]
+
+
 
 
 
@@ -31,7 +43,9 @@ function preload() {
 function setup() {
   createCanvas(800, 600)
   angleMode(DEGREES)
-analyzer()
+  for(var i = 1; i < NofSongsPP; i++) {
+    PP.push(false);
+  }
   //sound control
 
 
@@ -57,7 +71,7 @@ analyzer()
   const conte = {
     k: 300,
     j: 2,
-    text:"JUST POLITICS" ,
+    text: "JUST POLITICS",
     Wposition1: 82,
     Hposition1: 385,
     Ww1: 66,
@@ -103,15 +117,18 @@ analyzer()
   //VHS push
   myVHS = [new VHS(roll), new VHS(conte), new VHS(komm), new VHS(spooky)];
 }
-function analyzer(){
-  analyzer1 = new p5.Amplitude();
-  analyzer1.setInput(song[1]);
-  analyzer2 = new p5.Amplitude();
-  analyzer2.setInput(song[2]);
-  analyzer3 = new p5.Amplitude();
-  analyzer3.setInput(song[3]);
-  analyzer4 = new p5.Amplitude();
-  analyzer4.setInput(song[4]);}
+
+function setAnalyzer() {
+  // analyzer1 = new p5.Amplitude();
+  // analyzer1.setInput(song[1]);
+  // analyzer2 = new p5.Amplitude();
+  // analyzer2.setInput(song[2]);
+  // analyzer3 = new p5.Amplitude();
+  // analyzer3.setInput(song[3]);
+  // analyzer4 = new p5.Amplitude();
+  // analyzer4.setInput(song[4]);
+}
+
 function draw() {
   illus()
   for (let i = 0; i < myVHS.length; i++) {
@@ -126,113 +143,123 @@ function draw() {
   viz()
 
 }
+
 function viz() {
+  //
+  // volume1 = analyzer1.getLevel();
+  // volume1 = map(volume1, 0, 1, 10, 300)
+  // volume2 = analyzer2.getLevel();
+  // volume2 = map(volume2, 0, 1, 10, 300)
+  // volume3 = analyzer3.getLevel();
+  // volume3 = map(volume3, 0, 1, 10, 300)
+  // volume4 = analyzer4.getLevel();
+  // volume4 = map(volume4, 0, 1, 10, 300)
+  let d = 10;
+  for (let q = 374; q < 480; q += d) {
+    let h = (q - 374) / 10
+    push();
+    noFill();
+    strokeWeight(1)
 
-  volume1 = analyzer1.getLevel();
-  volume1 = map(volume1, 0, 1, 10, 300)
-  volume2 = analyzer2.getLevel();
-  volume2 = map(volume2, 0, 1, 10, 300)
-  volume3 = analyzer3.getLevel();
-  volume3 = map(volume3, 0, 1, 10, 300)
-  volume4 = analyzer4.getLevel();
-  volume4 = map(volume4, 0, 1, 10, 300)
-  //console.log(analyzer1.getLevel())
-    let d = 10;
-    for (let q = 374; q < 480; q += d) {
-  let h = (q - 374) / 10
-  push();
-  noFill();
-  strokeWeight(1)
-  if (song[1].isPlaying()==true) {
 
-    stroke("#00E0D5")
 
-    rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
-    rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
-  }
-  else if (song[2].isPlaying()==true) {
-    stroke("#9AC5E4")
-    rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
-    rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
-  }
-  else if (song[3].isPlaying()==true) {
-    stroke("#E76468")
-    rect(q, 200 + (-volume3 / 2) / h - q / 18, 3, volume3 / h)
-    rect(760 - q, (157.7 + (-volume3 / 2) / h) + q / 18, 3, volume3 / h)
-  }
-  else if (song[4].isPlaying()==true) {
-    stroke("#4B1B27")
-    rect(q, 200 + (-volume4 / 2) / h - q / 18, 3, volume4 / h)
-    rect(760 - q, (157.7 + (-volume4 / 2) / h) + q / 18, 3, volume4 / h)
-  }
-  pop();
+    if (playingIndex !== -1 && song[playingIndex].isPlaying()) {
 
-}}
+      let volume = map(analyzer.getLevel(), 0, 1, 10, 300);
+        colorOK= colors[playingIndex - 1]
+        stroke(colorOK);
+        //console.log(volume)
+      rect(q, 200 + (-volume / 2) / h - q / 18, 3, volume / h)
+      rect(760 - q, (157.7 + (-volume/ 2) / h) + q / 18, 3, volume / h)
+    }
+
+    // if (song[1].isPlaying() == true) {
+    //
+    //   stroke("#00E0D5")
+    //
+    //   rect(q, 200 + (-volume1 / 2) / h - q / 18, 4, volume1 / h)
+    //   rect(760 - q, (157.7 + (-volume1 / 2) / h) + q / 18, 4, volume1 / h)
+    // } else if (song[2].isPlaying() == true) {
+    //   stroke("#9AC5E4")
+    //   rect(q, 200 + (-volume2 / 2) / h - q / 18, 3, volume2 / h)
+    //   rect(760 - q, (157.7 + (-volume2 / 2) / h) + q / 18, 3, volume2 / h)
+    // } else if (song[3].isPlaying() == true) {
+    //   stroke("#E76468")
+    //   rect(q, 200 + (-volume3 / 2) / h - q / 18, 3, volume3 / h)
+    //   rect(760 - q, (157.7 + (-volume3 / 2) / h) + q / 18, 3, volume3 / h)
+    // } else if (song[4].isPlaying() == true) {
+    //   stroke("#4B1B27")
+    //   rect(q, 200 + (-volume4 / 2) / h - q / 18, 3, volume4 / h)
+    //   rect(760 - q, (157.7 + (-volume4 / 2) / h) + q / 18, 3, volume4 / h)
+    // }
+    pop();
+
+  }
+}
+
 function illus() {
 
 
-    resizeCanvas(800, 600);
-    if (song[1].isPlaying()) {
-      image(img[1], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "#006C92"
+  let colorsBG = [
+    "#006C92",
+    "#925098",
+    "#092B34",
+    "#ECAD6F"
+  ]
 
-    } else if (song[2].isPlaying()) {
-      image(img[2], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "#925098"
-    }
-    else if (song[3].isPlaying()) {
-      image(img[3], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "#092B34"
-    }
-    else if (song[4].isPlaying()) {
-      image(img[4], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "#ECAD6F"
-    } else {
-      image(img[0], 0, 0, 800, 600);
-      document.body.style.backgroundColor = "gray"
-    }
-
-
+  resizeCanvas(800, 600);
+  if (playingIndex !== -1 && song[playingIndex].isPlaying()) {
+    image(img[playingIndex], 0, 0, 800, 600);
+    colorOKBG= colorsBG[playingIndex - 1]
+    document.body.style.backgroundColor = colorOKBG
+ } else {
+    image(img[0], 0, 0, 800, 600);
+    document.body.style.backgroundColor = "gray"
+  }
 }
 
 function mousePressed() {
+
   if (mouseX > 280 && mouseX < 325 && mouseY > 286 && mouseY < 326) {
-    if (song[1].isPlaying() == true) {
-      song[1].pause()
-      g = true;
-    } else if (g == true) {
-      song[1].play()
-      g = false;
-    }
-    if (song[2].isPlaying() == true) {
-      song[2].pause()
-      h = true;
+    if (playingIndex !== -1 && song[playingIndex].isPlaying()) {
+      song[playingIndex].pause()
+      PP[playingIndex - 1] = true;
+    } else if (PP[playingIndex - 1] == true) {
+      analyzer = new p5.Amplitude();
+      analyzer.setInput(song[playingIndex]);
+      song[playingIndex].play()
+      PP[playingIndex - 1] = false;
 
-    } else if (h == true) {
-      song[2].play()
-      h = false;
-    }
-    if (song[3].isPlaying() == true) {
-      song[3].pause()
-      f = true;
-
-    } else if (f == true) {
-      song[3].play()
-      f = false;
-    }
-    if (song[4].isPlaying() == true) {
-      song[4].pause()
-      d = true;
-    } else if (d == true) {
-      song[4].play()
-      d = false;
-    }
-  }
+    }}
+  //   if (song[2].isPlaying() == true) {
+  //     song[2].pause()
+  //     h = true;
+  //
+  //   } else if (h == true) {
+  //     song[2].play()
+  //     h = false;
+  //   }
+  //   if (song[3].isPlaying() == true) {
+  //     song[3].pause()
+  //     f = true;
+  //
+  //   } else if (f == true) {
+  //     song[3].play()
+  //     f = false;
+  //   }
+  //   if (song[4].isPlaying() == true) {
+  //     song[4].pause()
+  //     d = true;
+  //   } else if (d == true) {
+  //     song[4].play()
+  //     d = false;
+  //   }
+  // }
 
 }
 
 function mouseClicked() {
-  console.log(myVHS)
+  //console.log(myVHS)
   for (var i = 0; i < myVHS.length; i++) {
     if (myVHS[i].click()) {
 
@@ -281,6 +308,7 @@ class VHS {
 
     noFill();
     noStroke();
+
     fill("gray")
     if (this.hovering) {
       fill("black")
@@ -288,7 +316,7 @@ class VHS {
 
       //strokeWeight(1)
 
-      console.log(this.hovering)
+      //console.log(this.hovering)
 
     }
     if (this.clicked) {
@@ -298,12 +326,14 @@ class VHS {
       song[3].stop()
       song[4].stop()
 
-      song[this.j].play()
 
+            playingIndex = this.j;
 
+let mySong = song[playingIndex]
+      mySong.play();
 
-
-
+      analyzer = new p5.Amplitude();
+      analyzer.setInput(song[playingIndex]);
 
 
     }
@@ -347,40 +377,4 @@ class VHS {
     }
   }
 
-
-
-
 }
-
-//function hover()    {
-//if(mouseX>65 && mouseX<185+65 && mouseY>372 && mouseY<372+28){
-
-//  stroke("red")
-//  strokeWeight(2)}
-//  else {
-
-//      noStroke()
-//    }
-//}
-
-
-//function mousePressed() { //Runs whenever the mouse is pressed
-//  if (mouseX > 65 && mouseX < 185 + 65 && mouseY > 372 && mouseY < 372 + 28) {
-//    if (song[1].isPlaying()) {
-//      song[1].stop();
-//    } else {
-//      song[1].play();
-//    }
-//    song[2].stop()
-//    document.body.style.backgroundColor = "red"
-//  }
-//  if (mouseX > width / 3.6 && mouseX < width / 3.6 + width / 8 && mouseY > height / 3 && mouseY < height / 3 + height / 26) {
-//    song[2].play();
-//    song[1].stop()
-//  }
-//}
-//
-//function playsong() {
-//
-//  song[1].play()
-//}
